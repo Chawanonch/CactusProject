@@ -1,0 +1,321 @@
+﻿@using CactusProject.Utility
+@model ShoppingCart
+
+<form method="post">
+    <input asp-for="CactusId" hidden />
+
+    <div class="container">
+        <div class="col-12 col-md-2 m-start">
+            <a class="btn btn-success form-control" style="border-radius: 50px; font-family: 'TH Sarabun New'; font-size: 35px; background: #000000;" onclick="history.go(-1)">BACK</a>
+        </div>
+
+        <div class="card container pt-6 mt-2">
+            <div class="card-header text-light row" style="background: 	#333333; border-style: solid; ">
+                <div class="col-12 col-md-6">
+                    <h1 class="text-white" style="font-family: 'TH Sarabun New'; font-size: 65px;">@Model.Cactus.Name</h1>
+                    <small class="text-white">Category : @Model.Cactus.Category.Name</small>
+                </div>
+                <div class="col-12 col-md-6 text-end pt-4">
+
+                    @if (@ViewBag.Avg != null)
+                    {
+                        <h4 class="text-white">@ViewBag.Avg MAX 5 <span class="fa fa-star checked"></span></h4>
+                        <div><small class="text-white">(@ViewBag.review reviews)</small></div>
+                    }
+                    else
+                    {
+                        <h4 class="text-white">No Review</h4>
+                    }
+                    <span class="badge pt-2 text-white" style="height:30px; margin: 5px 12.5px 0 0; font-family:'Courier New'; background: #0066FF;">@Model.Cactus.Category.Name</span>
+                </div>
+            </div>
+
+            <div class="card-body row container bg-white" style="margin: 0 0 0 3px;">
+                <div class="container rounded p-4">
+                    <div class="row">
+
+                        <div class="col-12 col-lg-4">
+
+                            @{
+                                string ImgUrl1 = "http://10.103.0.30/Cs64/s09/CAC" + @Model.Cactus.ImageUrl;
+
+                            }
+
+                            <a href=@ImgUrl1 role="button" target="_bank" class="btn">
+                                <img src=@ImgUrl1 width="350px" height="333px" class="rounded" />
+                            </a>
+
+                            @foreach (var item in @Model.Cactus.Image)
+                            {
+                                string ImgUrl = "http://10.103.0.30/Cs64/s09/CAC" + item.Name;
+
+                                <a href=@ImgUrl role="button" target="_bank" class="btn">
+                                    <img src=@ImgUrl width="87px" height="80px" />
+                                </a>
+
+                                @*<img src="@item.Name" alt="@item.Name" width="87px" height="80px" class="rounded mt-2" />*@
+                            }
+
+                        </div>
+
+                        <div class="col-8 col-lg-8">
+
+                            <div class="row pl-2" style="margin: 0 10px 0 0;">
+                                รายละเอียด
+                                <p class="text-secondary">@Html.Raw(Model.Cactus.Description)</p>
+                                <p class="text-secondary">CATEGORY : @Html.Raw(Model.Cactus.Category.Name)</p>
+                                <p class="text-secondary">SOURCE : @Html.Raw(Model.Cactus.Source.Name)</p>
+                                <p class="text-secondary">GENUS : @Html.Raw(Model.Cactus.Genus.Name)</p>
+                                <p class="text-secondary">SIZE : @Html.Raw(Model.Cactus.Size.Sizename)</p>
+                                @if (@Model.Cactus.Amount <= 999)
+                                {
+                                    <p class="text-secondary">AMOUNT : @Html.Raw(Model.Cactus.Amount)</p>
+                                }
+                                else
+                                {
+                                    <p class="text-secondary">AMOUNT : 999+ </p>
+
+                                }
+                            </div>
+                            <div class="row pl-2" style="color:maroon; font-weight:bold">
+                                <div class="p-1 col-2">
+                                    <div><h4>THB</h4></div>
+                                </div>
+                                <div class="p-1 col-2">
+                                    <div>@Model.Cactus.Price.ToString("c")</div>
+                                </div>
+                            </div>
+
+                            <div class="row pl-2">
+                                <div class="col-2 mt-2">
+                                    <label asp-for="Count" class="control-label"></label>
+                                    <input asp-for="Count" class="form-control" min="1" max="@Model.Cactus.Amount" step="1" />
+                                    <span asp-validation-for="Count" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    @*<span class="text-dark"> : @ViewBag.Priceall</span>*@
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-end">รับประกันสินค้า ยินดีคืนเงิน</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-8 mt-2 m-auto">
+            @if (@Model.Cactus.Amount != 0)
+            {
+                <button type="submit" value="Add to Cart" class="btn btn-primary form-control" style="border-radius: 50px; font-family: 'TH Sarabun New'; font-size: 35px; background: #000000;">ADD TO CART</button>
+            }
+        </div>
+    </div>
+
+    <div class="container mt-4 bg-white">
+        <div>
+            @if (User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Admin))
+            {
+                <div class="text-end mt-4">
+                    <a class="btn btn-dark " asp-controller="Review" asp-action="Index" asp-route-productId="@Model.CactusId">REVIEW</a>
+                </div>
+            }
+
+            @if (@ViewBag.Avg != null)
+            {
+                <h3>PRODUCT RATTING</h3>
+                <h5 class="m-4">@ViewBag.Avg MAX 5 <span class="fa fa-star checked"></span></h5>
+            }
+            else
+            {
+                <h4>ยังไม่มีคอมเม้น</h4>
+            }
+        </div>
+        <hr />
+        @foreach (var item in @Model.Cactus.Review)
+        {
+            <table class="mt-2" width=1280>
+                <tbody>
+                    <tr>
+                        <td>
+
+                            <div>
+                                @if (User.IsInRole(SD.Role_Admin))
+                                {
+                                    <div class="text-end mt-1">
+                                        <a class="btn btn-outline-dark mx-1" asp-controller="Review" asp-action="RemoveReview" asp-route-id="@item.Id"
+                                   onclick="return confirm('Confirm delete')">
+                                            <i class="bi bi-x"></i>
+                                        </a>
+                                    </div>
+                                }
+                                <div>
+                                    <h4><img src="~/img/247319.png" width="40px" /> @item.User.FullName</h4>
+                                </div>
+                            </div>
+
+                            <div style="margin: 0 0 0 50px;">
+                                @for (var i = 0; i < @item.Star; i++)
+                                {
+                                    <span class="fa fa-star checked"></span>
+                                }
+
+                                @for (var i1 = @item.Star; i1 < 5; i1++)
+                                {
+                                    <span class="fa fa-star"></span>
+                                }
+
+                                <div class="mt-2">@item.CreateDate : ชื่อสินค้า @item.Cactus.Name</div>
+                                <div class="mt-3"> @Html.Raw(@item.Comment)</div>
+
+                                @foreach (var dataImage in item.ReviewImage)
+                                {
+                                    string ImgUrl = "http://10.103.0.30/Cs64/s09/CAC" + dataImage.Image;
+
+                                    <a href=@ImgUrl role="button" target="_bank" class="btn">
+                                        <img src=@ImgUrl class="rounded mt-2" width="100px" height="75px" />
+                                    </a>
+                                }
+                                <br />
+                            </div>
+                            <hr>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        }
+    </div>
+
+
+</form>
+<br />
+
+<div class="container">
+    <div class="row">
+        <div style="font-size: 36px; color: #000000;">สินค้าอื่นๆ</div>
+        <hr />
+        @foreach (var item in @ViewBag.Showproductcate)
+        {
+            string ImgUrl = "http://10.103.0.30/Cs64/s09/CAC" + item.ImageUrl;
+
+            var date = item.Date;
+            var datenow = @DateTime.Now;
+
+            var ListPrice = item.Price + (item.Price * @ViewBag.random);
+            <div class="col-3 text-white p-3">
+                <div style="background:#F5FFFA;">
+                    <div class="card p-3" style="background:#ffffff">
+
+                        <small class="sold_out">
+                            สินค้าแนะนำ
+                        </small>
+
+                        <div class="card h-70" style="background:#F5FFFA;">
+
+                            <a asp-action="Details" asp-route-productId="@item.Id" asp-route-categoryId="@item.CategoryId">
+                                <img src=@ImgUrl class="d-block image" width="100%" height="250" style="font-size:1.125rem;text-anchor:middle" />
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-dark" style="font-family: system-ui; font-size: 30px; font-feature-settings: 'smcp' on; text-decoration: overline dotted #990033;">@item.Name</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-start" style="font-family: cursive;">
+                                <div class="row">
+                                    <div class="col text-start">
+                                        <strike style="color:#adadad;">
+                                            @(ListPrice.ToString("0.00"))฿
+
+                                        </strike>
+                                    </div>
+                                    <div class="col text-end">
+                                        <small style="font-size: 20px;">
+                                            @item.Price฿
+                                        </small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div>
+                            <a class="btn btn-success w-100" style="background:#006666; font-family: fantasy;" asp-action="Details" asp-route-productId="@item.Id" asp-route-categoryId="@item.CategoryId"><span>DETAIL + BUY</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @foreach (var item in @ViewBag.Showproduct)
+        {
+            string ImgUrl = "http://10.103.0.30/Cs64/s09/CAC" + item.ImageUrl;
+
+            var date = item.Date;
+            var datenow = @DateTime.Now;
+
+            var ListPrice = item.Price + (item.Price * @ViewBag.random);
+            <div class="col-3 text-white p-3">
+                <div style="background:#F5FFFA;">
+                    <div class="card p-3" style="background:#ffffff">
+                        <div class="card h-70" style="background:#F5FFFA;">
+
+                            @if (item.Amount == 0)
+                            {
+                                <small class="sold_out">
+                                    Sold out
+                                </small>
+                            }
+                            <a asp-action="Details" asp-route-productId="@item.Id" asp-route-categoryId="@item.CategoryId">
+                                <img src=@ImgUrl class="d-block image" width="100%" height="250" style="font-size:1.125rem;text-anchor:middle" />
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-dark" style="font-family: system-ui; font-size: 30px; font-feature-settings: 'smcp' on; text-decoration: overline dotted #990033;">@item.Name</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-start" style="font-family: cursive;">
+                                <div class="row">
+                                    <div class="col text-start">
+                                        <strike style="color:#adadad;">
+                                            @(ListPrice.ToString("0.00"))฿
+
+                                        </strike>
+                                    </div>
+                                    <div class="col text-end">
+                                        <small style="font-size: 20px;">
+                                            @item.Price฿
+                                        </small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div>
+                            <a class="btn btn-success w-100" style="background:#006666; font-family: fantasy;" asp-action="Details" asp-route-productId="@item.Id" asp-route-categoryId="@item.CategoryId"><span>DETAIL + BUY</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function cc() {
+                //    x = document.getElementById("count").value;
+                //    y = @Model.Cactus.Amount;
+
+                //    if (x > y) {
+                //        document.getElementById("count").value = y;
+                //    }
+                //    else if (x < 1) {
+                //        document.getElementById("count").value = 1;
+                //    }
+
+                //}
+    </script>
+}

@@ -1,0 +1,25 @@
+﻿@model Size
+
+<div>
+    <div class="row btn-light disabled p-2">
+        <div class="col-6"><h4>Size</h4></div>
+        <div class="col-6 text-end">
+            <a class="btn btn-info text-white" asp-action="Index">Back to list</a>
+        </div>
+    </div>
+
+    <form method="post" style="background-color: #FFFFFF">
+      <div class="mb-3">
+        <label asp-for="Sizename" class="form-label"></label>
+        <input class="form-control" asp-for="Sizename">
+        <span class="text-danger" asp-validation-for="Sizename"></span>
+      </div>
+
+
+      <button type="submit" class="btn btn-primary">ยืนยัน</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

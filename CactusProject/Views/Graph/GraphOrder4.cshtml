@@ -1,0 +1,61 @@
+﻿@using CactusProject.Utility
+@{
+    var dateY = DateTime.Now.ToString("yyyy");
+}
+
+<div class="text-center">
+
+    <span class="dropdown-header">More Graph</span>
+
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder" asp-route-status="@SD.StatusApproved">Graph Pie</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder1" asp-route-status="@SD.StatusApproved">Graph Column</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder2" asp-route-status="@SD.StatusApproved">Graph Bar</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder3" asp-route-status="@SD.StatusApproved">Graph Pyramid</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder4" asp-route-status="@SD.StatusApproved">Graph SplineArea</a>
+
+</div>
+
+<div class="container text-dark mt-4">
+    <form asp-action="GraphOrder4">
+      <label for="date">Date:</label>
+      <input type="date" name="date">
+      <input type="submit">
+    </form>
+    <div class="bg-white"><h4>ยอดขายรวมทั้งหมด @dateY : @ViewBag.sumtotal</h4></div>
+
+    <div id="chartContainer" style="height: 675px; width: 100%;"></div>
+</div>
+
+@section Scripts{
+    <script>
+        window.onload = function() {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                title: {
+                    text: "ยอดขาย @dateY"
+                },
+                subtitles: [{
+                    text: "2565 ถึง @dateY"
+                }],
+                axisX: {
+                    valueFormatString: "YYYY"
+                },
+                data: [{
+                    type: "splineArea",
+                    color: "#FFCC00",
+                    toolTipContent: "{label} Pm - {z} Bath - {y}%",
+                    startAngle: -45,
+                    indexLabel: "{y}%",
+                    indexLabelFontColor: "#000000",
+                    indexLabelPlacement: "inside",
+                    indexLabelFontSize: 20,
+                    yValueFormatString: "#.##",
+                    dataPoints: @Html.Raw(ViewBag.DataPoints)
+                    }]
+            });
+            chart.render();
+
+        }
+    </script>
+ }

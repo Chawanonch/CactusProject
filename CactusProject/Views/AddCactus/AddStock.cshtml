@@ -1,0 +1,45 @@
+﻿@model CactusProject.ViewModels.AddVM
+
+<hr />
+<div class="row border rounded m-auto">
+    <form asp-action="AddStock" enctype="multipart/form-data" method="post" style="background-color: #FFFFFF">
+
+        <input asp-for="AddCactus.Id" hidden/>
+
+        <div class="row">
+            <div class="col-8">
+                <div class="row">Add
+
+                    <div class="form-group">
+                        <label asp-for="AddCactus.CactusId" class="control-label"></label>
+                        <select asp-for="AddCactus.CactusId" asp-items="@Model.CactusList" class="form-control">
+                            <option disabled selected>-เลือก สินค้าที่ต้องการเพิ่ม-</option>
+                        </select>
+                        <span asp-validation-for="AddCactus.CactusId" class="text-danger"></span>
+                    </div>
+
+                    <div class="row pl-2">
+                        <div class="col-2 mt-2">
+                            <label asp-for="AddCactus.Amount" class="control-label"></label>
+                            <input asp-for="AddCactus.Amount" class="form-control"  min="1" max="999" step="1" value="1"/>
+                            <span asp-validation-for="AddCactus.Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group py-2">
+                        <button type="submit" class="btn btn-success">Create</button>
+                        <a class="btn btn-outline-secondary" asp-action="HomeAS">Back to list</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <a class="dropdown-item text-dark text-center" asp-controller="AddCactus" asp-action="Index">Record <i class="bi bi-arrow-90deg-right"></i></a>
+
+</div>
+
+@section Scripts {
+        @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

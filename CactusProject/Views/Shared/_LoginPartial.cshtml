@@ -1,0 +1,55 @@
+﻿@using CactusProject.Utility
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    var d = Accessor.HttpContext.Session.GetInt32("t").ToString();
+}
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Admin))
+        {           
+        <li class="nav-item">
+            <a class="nav-link text-white notification" asp-area="" asp-controller="Cart" asp-action="Index">
+                <i class="bi bi-cart"></i>
+
+                @if (User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Admin))
+                {
+                    @if (@d != "0")
+                    {
+                        <span class="badge">@d</span>
+                    }
+                }
+            </a>
+        </li>
+        }
+        <li class="nav-item dropdown">
+            <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Setting</a>
+
+            <div class="dropdown-menu dropdown-content">
+                <span class="dropdown-header">ผู้ใช้</span>
+                <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile @UserManager.GetUserName(User)</a>
+            </div>
+
+
+        </li>
+        <li class="nav-item">
+@*            <form id="logoutForm" class="form-inline text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-white" style="font-size: 16px; font-family: Monospace,Monaco;">Logout</button>
+            </form>*@
+            <a class="nav-link text-white" id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" >Logout</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

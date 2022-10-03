@@ -1,0 +1,59 @@
+﻿@model CactusProject.ViewModels.ReviewVM
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data" style="margin: 150px 0 0 0;">
+
+        <input asp-for="Images" hidden />
+
+        <div class="mb-3">
+            <label asp-for="Comment" class="form-label"></label>
+            <input class="form-control" asp-for="Comment" value="-" />
+            <span asp-validation-for="Comment" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-3">
+            <label asp-for="Images" class="form-label"></label>
+            <input multiple name="Images" type="file" accept="image/*" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Star" class="form-label mt-4"></label>
+            <select multiple="" asp-for="Star" class="form-select" id="exampleSelect2">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+            <span asp-validation-for="Star" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4" onclick="ValidateImage()">Submit</button>
+
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        function ValidateImage() {
+            if (document.getElementById("UploadBox").value == "") {
+                Swal.fire({
+                    title: 'คุณแน่ใจ..?',
+                    text: "คุณจะไม่สามารถย้อนกลับได้!",
+                    icon: 'รอสักครู่',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'ใช่ฉันต้องการที่จะทำมัน!',
+                    cancelButtonText: 'ยกเลิก'
+                }).then((result) => {
+                })
+                return false
+            }
+            return true
+        }
+    </script>
+    }

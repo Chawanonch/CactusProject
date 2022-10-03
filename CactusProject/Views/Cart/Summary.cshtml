@@ -1,0 +1,145 @@
+﻿@using CactusProject.ViewModels
+@model ShoppingCartVM
+
+<form method="post" enctype="multipart/form-data">
+	<input asp-for="@Model.OrderHeader.City" hidden/>
+	<input asp-for="@Model.OrderHeader.OrderStatus" hidden/>
+	<input asp-for="@Model.OrderHeader.PostalCode" hidden/>
+	<input asp-for="@Model.OrderHeader.State" hidden/>
+
+    <br />
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-light ml-0" style="background-color: #006666">
+                <div class="row container">
+                    <div class="col-6">
+                        <h2 class="text-white">หน้าสั่งซื้อ</h2>
+                    </div>
+                    <div class="col-6 text-end">
+                        <a class="btn btn-outline-danger btn-lg" asp-action="Index">ย้อนกลับ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-10 pb-2">
+                            <div class="row">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-dark">รายละเอียดผู้ซื้อ</span>
+                                </h4>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-2">
+                                    <label>ชื่อ</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" asp-for="@Model.OrderHeader.Name"/>
+                                    <span asp-validation-for="@Model.OrderHeader.Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-2">
+                                    <label>ที่อยู่</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" asp-for="@Model.OrderHeader.StreetAddress"/>
+                                    <span asp-validation-for="@Model.OrderHeader.StreetAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-2">
+                                    <label>เมือง</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" asp-for="@Model.OrderHeader.City"/>
+                                    <span asp-validation-for="@Model.OrderHeader.City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-2">
+                                    <label>รหัสไปรษณีย์</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" asp-for="@Model.OrderHeader.PostalCode"/>
+                                    <span asp-validation-for="@Model.OrderHeader.PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-2">
+                                    <label>สถานะ</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" asp-for="@Model.OrderHeader.State"/>
+                                    <span asp-validation-for="@Model.OrderHeader.State" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+
+                                <button type="button" class="btn btn-primary form-control w-auto"
+                                onclick="document.getElementById('UploadBox').click()">อัพโหลดสลิป</button>
+
+                                <input name="file" type="file" accept="image/*" class="visually-hidden"
+                                onchange="ShowImage(event)" id="UploadBox">
+
+                                <div class="col-9">
+                                    <img id="output" height = "200px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8">
+
+                        
+                    </div>
+                        <div class="col-12">
+                            <h4>
+                                <span style="color: #000000;">รายการทั้งหมด</span>
+                            </h4>
+                            <ul class="mb-3" style="background-color: #F5F5F5;">
+                                @foreach (var item in Model.ListCart)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between" style="background-color: #F8F8FF;">
+                                    <div>
+                                        <h6 class="my-0" style="color: #2F4F4F;">@item.Cactus.Name</h6>
+                                        <small style="color: #FFFFE0;">Quantity: @item.Count</small>
+                                    </div>
+                                    <span class="text-muted">@item.Cactus.Price ฿ </span>
+                                     </li>
+                                }
+                                <li class="list-group-item d-flex justify-content-between bg-light" style="background-color: #DCDCDC;">
+                                    <span class="text-danger"> Total (BAHT)</span>
+								    <strong class="text-dark">@Model.OrderHeader.OrderTotal.ToString("0.00") ฿</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-8 mt-2 m-auto">
+        <button type="submit" class="btn btn-primary btn-lg form-control" onclick="return ValidateImage()">ยืนยัน</button>
+    </div>
+</form>
+       
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function ValidateImage(){
+         if(document.getElementById("UploadBox").value ==""){
+             Swal.fire('No Image')
+             return false
+             }
+
+         return true
+        }
+
+        function ShowImage(event){
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.height = "200px";
+        }
+    </script>
+}

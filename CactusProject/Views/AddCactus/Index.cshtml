@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CactusProject.Models.AddCactus>
+
+<div class="container">
+    <br /><br />
+    <a class="dropdown-item text-dark text-center" asp-controller="AddCactus" asp-action="HomeAS"><i class="bi bi-arrow-90deg-left"></i> BACK</a>
+    <a class="dropdown-item text-dark text-center" asp-action="AddStock">  Add <i class="bi bi-arrow-90deg-right"></i></a>
+
+
+    <br /><br /><br />
+    <a class="dropdown-item text-dark text-center" asp-controller="AddCactus" asp-action="RemoveAllRecord" onclick="return confirm('Are you sure')"> Delete All </a>
+
+    <table class="table table-hover pt-2 " id="example1">
+        <thead style="background: #000000; color: #ffffff;">
+            <tr>
+                <th hidden>
+                    Id
+                </th>
+                <th>
+                    ชื่อสินค้า
+                </th>
+                <th>
+                    จำนวนที่เพิ่ม
+                </th>
+                <th>
+                    เวลาที่เพิ่ม
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.Id)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cactus.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateDelivery)
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" asp-action="Delete" onclick="return confirm('Are you sure')" asp-route-id=@item.Id asp-route-Amount=@item.Amount asp-route-CactusId=@item.CactusId><i class="bi bi-x"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

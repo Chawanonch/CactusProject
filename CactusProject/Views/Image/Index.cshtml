@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CactusProject.Models.Image>
+
+<div style="background-color: #FFFFFF">
+    <div class="row btn-light disabled p-2">
+        <div class="col-6"><h4>Image list</h4></div>
+        <div class="col-6 text-end">
+            <a class="btn btn-info text-white " asp-controller="Image" asp-action="UpSert">Create Image</a>
+        </div>
+    </div>
+    <table class="table table-hover pt-2" id="example1">
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    ชื่อสินค้า
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                
+                <th>Update | Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string ImgUrl = "http://10.103.0.30/Cs64/s09/CAC" + item.Name;
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cactus.Name)
+                    </td>
+                    <td>
+                        <img src=@ImgUrl alt="" height=100 width=100 /> 
+                    </td>
+                   
+                    <td>
+                        <a class="btn btn-warning mr-2" asp-action="UpSert" asp-route-id="@item.Id">
+                           <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <a class="btn btn-danger mx-1" asp-action="Delete" asp-route-id="@item.Id"
+                        onclick="return confirm('Confirm delete')">
+                           <i class="bi bi-x"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

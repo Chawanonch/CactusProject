@@ -1,0 +1,98 @@
+﻿@model IEnumerable<CactusProject.Models.Cactus>
+
+<div style="background-color: #FFFFFF">
+    <div class="row btn-light disabled p-2">
+        <div class="col-6"><h4>Cactus list</h4></div>
+        <div class="col-6 text-end">
+            <a class="btn btn-info text-white " asp-controller="Cactus" asp-action="UpSert">Create Cactus</a>
+        </div>
+    </div>
+    <table class="table table-hover pt-2" id="example1" >
+        <thead class="table-primary">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    วัน/เดือน/ปี
+                </th>
+                <th>
+                    ประเภท
+                </th>
+                
+                <th>
+                    สายพันธุ์
+                </th>
+                <th>
+                    ขนาด
+                </th>
+                <th>
+                    แหล่งที่มา
+                </th>
+                
+                <th>Update | Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                   @* <td>
+                        @Html.Raw(item.Description)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genus.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Size.Sizename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Source.Name)
+                    </td>
+                    <td>
+                        <a class="btn btn-warning mr-2" asp-action="UpSert" asp-route-id="@item.Id">
+                           <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <a class="btn btn-danger mx-1" asp-action="Delete" asp-route-id="@item.Id"
+                        onclick="return confirm('Confirm delete')">
+                           <i class="bi bi-x"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

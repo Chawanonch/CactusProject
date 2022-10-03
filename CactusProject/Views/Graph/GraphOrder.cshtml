@@ -1,0 +1,75 @@
+﻿@using CactusProject.Utility
+@{
+    var dateY = DateTime.Now.ToString("yyyy");
+}
+
+<div class="text-center">
+
+    <span class="dropdown-header">More Graph</span>
+
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder"  asp-route-status="@SD.StatusApproved">Graph Pie</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder1" asp-route-status="@SD.StatusApproved">Graph Column</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder2" asp-route-status="@SD.StatusApproved">Graph Bar</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder3" asp-route-status="@SD.StatusApproved">Graph Pyramid</a>
+    <a class="dropdown-item  text-dark" asp-controller="Graph" asp-action="GraphOrder4" asp-route-status="@SD.StatusApproved">Graph SplineArea</a>
+
+</div>
+
+
+
+<div class="container text-dark mt-4">
+
+    <form asp-action="GraphOrder">
+      <label for="date">ดูยอดขาย:</label>
+      <input type="date" name="date">
+      <input type="submit">
+    </form>
+
+    <div class="bg-white"><h4>ยอดขายรวมทั้งหมด @dateY : @ViewBag.sumtotal</h4></div>
+    <div id="chartContainer" style="height: 675px; width: 100%;"></div>
+</div>
+
+@section Scripts{
+    <script>
+        window.onload = function() {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                exportEnabled: true,
+                animationEnabled: true,
+                theme: "light2",// "light1", "light2", "dark1", "dark2"
+                title: {
+                    text: "ยอดขาย @dateY",
+                    fontSize: 35
+                },
+                subtitles: [{
+                    text: "2565 ถึง @dateY"
+                }],
+                legend: {
+                    cursor: "pointer",
+                    itemclick: explodePie,
+                },
+                data: [{
+                    type: "pie",
+                    toolTipContent: "{label} Pm - {z} Bath - {y}%",
+                    startAngle: -45,
+                    indexLabel: "{y}%",
+                    indexLabelFontColor: "#000000",
+                    indexLabelPlacement: "inside",
+                    indexLabelFontSize: 20,
+                    yValueFormatString: "#.##",
+                    dataPoints: @Html.Raw(ViewBag.DataPoints)
+                    }]
+            });
+            chart.render();
+
+            function explodePie(e) {
+                if (typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+                    e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+                } else {
+                    e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+                }
+                e.chart.render();
+            }
+        }
+    </script>
+ }

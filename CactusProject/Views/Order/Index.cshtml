@@ -1,0 +1,52 @@
+﻿@using CactusProject.Utility
+@model IEnumerable<OrderHeader>
+
+<div style="background-color: #FFFFFF">
+    <div class="row btn-light disabled p-2">
+        <div class="col-6"><h4>Order list</h4></div>
+    </div>
+    <table class="table table-hover" id="example1">
+        <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>CutomerName</th>
+                <th>PaymentDate</th>
+                <th>OrderTotal</th>
+                <th>OrderStatus</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.PaymentDate</td>
+                    <td>@item.OrderTotal</td>
+                    <td>@item.OrderStatus</td>
+                    <td>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            @if (item.OrderStatus == SD.StatusPending)
+                            {
+                                <a class="btn btn-warning" asp-action="Details" asp-route-id=@item.Id><i class="bi bi-pencil-fill"></i></a>                       
+                            }
+                            <a class="btn btn-danger" asp-action="Delete" onclick="return confirm('Are you sure')" asp-route-id=@item.Id><i class="bi bi-x"></i></a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger disabled" asp-action="Delete" onclick="return confirm('Are you sure')" asp-route-id=@item.Id><i class="bi bi-x"></i></a>
+                        }
+
+
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

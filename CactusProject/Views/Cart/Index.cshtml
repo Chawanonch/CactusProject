@@ -1,0 +1,99 @@
+﻿@using CactusProject.ViewModels
+@model ShoppingCartVM
+
+<form method="post">
+    <br />
+    <div class="container">
+        <div class="col-md-2">
+            <a class="btn btn-success form-control" style="border-radius: 50px; font-family: 'TH Sarabun New'; font-size: 22px; background: #000000;" asp-controller="Home" asp-action="Index">ADD PRODUCT</a>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header ml-0" style="background-color: #ffffff">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-dark" style="font-family: 'TH Sarabun New'; font-size: 45px;">Your Cart</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div style="margin: 0 0 0 0;">
+                    <div class="text-end">
+
+                        <h4 class="text-dark" style="margin: 0 203px 0 0;">Summary</h4>
+
+                        <p class="text-dark">Shipping and taxes calculated at checkout.</p>
+
+                        <div class="">
+                            <h4 class="">Total &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;@Model.OrderHeader.OrderTotal.ToString("0.00") ฿</h4>
+                            <hr style="margin: 0 0 0 925px;" />
+                        </div>
+
+                        <div class="col-md-3 mt-2" style="margin: 0 0 0 934px;">
+                            @if (Model.OrderHeader.OrderTotal != 0)
+                            {
+                                <a class="btn btn-success form-control mt-2" style="border-radius: 50px; font-family: 'TH Sarabun New'; font-size: 24px; background: #000000;" asp-action="Summary">BUY NOW!</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                @foreach (var item in Model.ListCart)
+                {
+
+                    string ImgUrl = "http://10.103.0.30/Cs64/s09/CAC" + item.Cactus.ImageUrl;
+
+                    <div class="row" style="margin: -200px 0 200px 0;">
+                        <div class="d-none d-lg-block col-lg-1 text-center py-2">
+                            <img src=@ImgUrl class="rounded" width="100%" height="75px" />
+                        </div>
+                        <div class="col-2 pt-md-3">
+                            <h4><strong class="text-dark" style="font-family: 'TH Sarabun New'; font-size: 32px;">@item.Cactus.Name</strong></h4>
+                            <p><small class="text-dark" style="font-family: 'TH Sarabun New'; font-size: 20px;">@Html.Raw(@item.Cactus.Category.Name)</small></p>
+
+                        </div>
+                        <div style="margin: -100px 0 0 320px;">
+                            <div class="col-8 col-lg-4 text-center row">
+
+                                <div class="col-3 pt-2">
+                                    <div class="w-75 btn-group" role="group">
+
+                                        <a class="btn btn" style="border-radius: 20px; background: 	#000099;" asp-action="Minus" asp-route-Id="@item.Id">
+                                            <i class="bi bi-dash-square"></i>
+                                        </a>
+
+                                        &nbsp;
+
+                                        <div class="p-2">
+                                            <strong class="text-dark">@item.Count </strong>
+                                        </div>
+
+                                        &nbsp;
+                                        <a class="btn btn" style="border-radius: 20px; background: 	#000099;" asp-action="Plus" asp-route-Id="@item.Id">
+                                            <i class="bi bi-plus-square"></i>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                <div class="col-2 col-sm-6  pt-2">
+                                    <div>
+                                        <small class="text-dark" style="font-size: 20px;">@item.Cactus.Price฿ </small>
+                                        <div style="margin: -25px 0 0 200px;">
+                                            <a class="btn btn" style="background: #FF4500" onclick="return confirm('Delete Confirm')" asp-action="Remove" asp-route-Id="@item.Id">
+                                                REMOVE
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</form>
